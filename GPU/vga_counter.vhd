@@ -2,19 +2,14 @@ library ieee;
 use ieee.std_logic_1164.all;
 
 entity vga_counter is
-	port(	clk, reset		:	in std_logic;
+	port(	reset			:	in std_logic;
+		pixel_clk		:	in std_logic;
 		Hsync, Vsync		:	buffer std_logic;
-		r, g, b			:	out std_logic;
-		nblanck, nsync		:	out std_logic;
-		--testing
-		pixel_clk_out		:	out std_logic;
-		Vcounto, Hcounto	:	out integer;
-		Vactiveo, Hactiveo	:	out std_logic;
-		denao			:	out std_logic
+		Hactiveout, Vactiveout	:	out std_logic
 		);
 end vga_counter;
 
-architecture control of vga_counter is
+architecture behavioural of vga_counter is
 
 	constant h1: integer:= 96; --hpulse
 	constant h2: integer:= 144; --hpulse + hbackport
@@ -25,21 +20,19 @@ architecture control of vga_counter is
 	constant v3: integer:= 515;
 	constant v4: integer:= 525;
 
-	signal Hactive, Vactive, dena	:	std_logic;
-	signal pixel_clk		:	std_logic;
+	signal Hactive, Vactive		:	std_logic;
 	signal Vcount			:	positive range 1 to v4 + 1;
 	signal Hcount			:	positive range 1 to h4 + 1;
 
 begin
+  
+p0: process(reset, pixel_clk)
+  begin
+    	if(reset = '1') then
+      		Hcount <= 1;
+  		Hsync <= '0';
 
---set the right starting values
-nblanck <= '1';
-nsync <= '0';
-pixel_clk <= clk;
---Hsync signal generation
-p1: process(pixel_clk)
-begin
-	if(pixel_clk'event and pixel_clk = '1') then
+	elsif(pixel_clk'event and pixel_clk = '1') then
 		Hcount <= Hcount + 1;
 		if(Hcount = h1) then
 			Hsync <= '1';
@@ -55,9 +48,13 @@ begin
 end process;
 
 --Vsync signal generation
-p2: process(Hsync)
+p2: process(reset, Hsync)
 begin
-	if(Hsync'event and Hsync = '1') then
+	if(reset = '1') then
+      		Vcount <= 1;
+  		Vsync <= '0';
+
+	elsif(Hsync'event and Hsync = '1') then
 		Vcount <= Vcount + 1;
 		if(Vcount = v1) then
 			Vsync <= '1';
@@ -72,12 +69,7 @@ begin
 	end if;
 end process;
 
---testing
-pixel_clk_out <= pixel_clk;
-Vcounto <= Vcount;
-Hcounto <= Hcount;
-Hactiveo <= Hactive;
-Vactiveo <= Vactive;
-denao <= dena;
-end architecture control;
+Hactiveout <= Hactive;
+Vactiveout <= Vactive;
 
+end architecture behavioural;
