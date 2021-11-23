@@ -56,7 +56,7 @@ begin
 			elsif (notesA_OUT = 'f') then 
 				next_state <= note_f;
 			elsif (notesA_OUT = 'g') then
-				next_state <= note_g;
+				next_state <= note_g
 			end if;
 
 		when note_s =>
