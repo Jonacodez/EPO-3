@@ -17,21 +17,21 @@ begin
 	process(notes_IN)
 	begin
 		if(notes_IN = "000") then
-			notes_OUT <= 's';
-		elsif(notes_IN = "001") then
 			notes_OUT <= 'c';
-		elsif(notes_IN = "010") then
-			notes_OUT <= 'j';
-		elsif(notes_IN = "100") then
+		elsif(notes_IN = "001") then
 			notes_OUT <= 'd';
-		elsif(notes_IN = "011") then
-			notes_OUT <= 'k';
-		elsif(notes_IN = "101") then
+		elsif(notes_IN = "010") then
 			notes_OUT <= 'e';
-		elsif(notes_IN = "110") then
+		elsif(notes_IN = "100") then
 			notes_OUT <= 'f';
-		elsif(notes_IN = "111") then
+		elsif(notes_IN = "011") then
 			notes_OUT <= 'g';
+		elsif(notes_IN = "101") then
+			notes_OUT <= 'a';
+		elsif(notes_IN = "110") then
+			notes_OUT <= 'b';
+		elsif(notes_IN = "111") then
+			notes_OUT <= 'k';
 		end if;
 	end process;  
 end architecture;
