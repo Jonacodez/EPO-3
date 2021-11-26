@@ -5,7 +5,7 @@ use IEEE.numeric_std.ALL;
 entity pwm_generator is
 port (  clk 		: in std_logic;
   	reset 		: in std_logic;
-	notesA_OUT	: in std.standard.character;
+	notes_OUT	: in std.standard.character;
 	succesbit_pwm 	: in std_logic;
 	count		: in std_logic_vector ( 3 downto 0);
 	pwm  		: out std_logic
@@ -13,7 +13,7 @@ port (  clk 		: in std_logic;
 end pwm_generator;
  
 architecture behavioural of pwm_generator is
-type statetype is ( note_state, note_s, note_c, note_j, note_d, note_k, note_e, note_f, note_g, rest);
+type statetype is ( note_state, note_c, note_d, note_e, note_f, note_g, note_a, note_b, note_k, rest);
 signal next_state, state : statetype; 
 
 begin 
@@ -41,25 +41,25 @@ begin
 			end if;
 		
 		when note_state=> 
-			if (notesA_OUT	= 's') then -- de note gaat nog gekoppeld worden aan de note_out van de cpu
-				next_state <= note_s;
-			elsif (notesA_OUT = 'c') then 
-				next_state <= note_c; 
-			elsif (notesA_OUT = 'j') then 
-				next_state <= note_j;
-			elsif (notesA_OUT = 'd') then 
-				next_state <= note_d;
-			elsif (notesA_OUT = 'k') then 
-				next_state <= note_k;
-			elsif (notesA_OUT = 'e') then 
+			if (notes_OUT	= 'c') then -- de note gaat nog gekoppeld worden aan de note_out van de cpu
+				next_state <= note_c;
+			elsif (notes_OUT = 'd') then 
+				next_state <= note_d; 
+			elsif (notes_OUT = 'e') then 
 				next_state <= note_e;
-			elsif (notesA_OUT = 'f') then 
+			elsif (notes_OUT = 'f') then 
 				next_state <= note_f;
-			elsif (notesA_OUT = 'g') then
+			elsif (notes_OUT = 'g') then 
 				next_state <= note_g;
+			elsif (notes_OUT = 'a') then 
+				next_state <= note_a;
+			elsif (notes_OUT = 'b') then 
+				next_state <= note_b;
+			elsif (notes_OUT = 'k') then
+				next_state <= note_k;
 			end if;
 
-		when note_s =>
+		when note_c =>
 			pwm <='1';
 				if( succesbit_pwm = '1') then
 					if (reset = '0') then
@@ -70,41 +70,7 @@ begin
 						next_state <= rest;
 					end if;
 				end if;
-		when note_c =>
-			pwm <='1';
-				if( succesbit_pwm = '1') then
-					if (reset = '0') then
-						if (unsigned(count)>100000) then  
-								next_state <= rest;
-							end if;
-					else 
-						next_state <= rest;
-					end if;
-				end if;
-		when note_j =>
-			pwm <='1';
-				if( succesbit_pwm = '1') then
-					if (reset = '0') then
-						if (unsigned(count)>100000) then  
-								next_state <= rest;
-							end if;
-					else 
-						next_state <= rest;
-					end if;
-			end if;
-
 		when note_d =>
-			pwm <='1';
-				if( succesbit_pwm = '1') then
-					if (reset = '0') then
-						if (unsigned(count)>100000) then  
-								next_state <= rest;
-							end if;
-					else 
-						next_state <= rest;
-					end if;
-				end if;
-		when note_k =>
 			pwm <='1';
 				if( succesbit_pwm = '1') then
 					if (reset = '0') then
@@ -125,7 +91,8 @@ begin
 					else 
 						next_state <= rest;
 					end if;
-				end if;
+			end if;
+
 		when note_f =>
 			pwm <='1';
 				if( succesbit_pwm = '1') then
@@ -138,6 +105,39 @@ begin
 					end if;
 				end if;
 		when note_g =>
+			pwm <='1';
+				if( succesbit_pwm = '1') then
+					if (reset = '0') then
+						if (unsigned(count)>100000) then  
+								next_state <= rest;
+							end if;
+					else 
+						next_state <= rest;
+					end if;
+				end if;
+		when note_a =>
+			pwm <='1';
+				if( succesbit_pwm = '1') then
+					if (reset = '0') then
+						if (unsigned(count)>100000) then  
+								next_state <= rest;
+							end if;
+					else 
+						next_state <= rest;
+					end if;
+				end if;
+		when note_b =>
+			pwm <='1';
+				if( succesbit_pwm = '1') then
+					if (reset = '0') then
+						if (unsigned(count)>100000) then  
+								next_state <= rest;
+							end if;
+					else 
+						next_state <= rest;
+					end if;
+				end if;
+		when note_k =>
 			pwm <='1';
 				if( succesbit_pwm = '1') then
 					if (reset = '0') then
