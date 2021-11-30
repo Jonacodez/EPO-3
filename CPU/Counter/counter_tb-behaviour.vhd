@@ -1,0 +1,38 @@
+library IEEE;
+use IEEE.std_logic_1164.ALL;
+
+architecture behaviour of counter_tb is
+   component counter
+      port(clk    : in  std_logic;
+           reset  : in  std_logic;
+           enable : in  std_logic;
+   	notes_OUT : in std_logic_vector( 4 downto 0);
+   	count_out  : out std_logic;
+   	count_out_s	: out std_logic
+   );
+   end component;
+   signal clk    : std_logic;
+   signal reset  : std_logic;
+   signal enable : std_logic;
+   signal notes_OUT : std_logic_vector( 4 downto 0);
+   signal count_out  : std_logic;
+   signal count_out_s	: std_logic;
+begin
+   test: counter port map (clk, reset, enable, notes_OUT, count_out, count_out_s);
+   clk <= '0' after 0 ns,
+          '1' after 20 ns when clk /= '1' else '0' after 20 ns;
+   reset <= '1' after 0 ns,
+            '0' after 80 ns;
+   enable <= '0' after 0 ns,
+		'1' after 4 ms;
+	
+   notes_OUT(0) <= '0' after 0 ns,
+			'1' after 3 ms;
+
+   notes_OUT(1) <= '0' after 0 ns;
+   notes_OUT(2) <= '0' after 0 ns;
+   notes_OUT(3) <= '0' after 0 ns;
+   notes_OUT(4) <= '0' after 0 ns;
+		
+end behaviour;
+

@@ -156,7 +156,7 @@ begin
 	end if;
 end process;
 
-count_out <= count(23) and ((count_s(24) xor s(1)) and (count_s(23) xor s(0))); 
-count_out_s <= (count_s(24) xor s(1)) and (count_s(23) xor s(0));
+count_out <= count(23);
+count_out_s 	 <= (count_s(24) xor s(1)) and (count_s(23) xor s(0)); 
 end behaviour;
 
