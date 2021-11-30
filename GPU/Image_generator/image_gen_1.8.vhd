@@ -8,8 +8,7 @@ entity image_gen is
 		Hcount, Vcount		:	in integer;
 		display_enable		:	in std_logic;
 		data_in			:	in std_logic_vector(4 downto 0);
-		--r_out, g_out, b_out	: 	in std_logic;
-		r, g, b			:	out std_logic
+		r_out, g_out, b_out	: 	out std_logic
 		);
 end image_gen;
 
@@ -17,6 +16,7 @@ architecture generator of image_gen is
 
 	signal shift_1, shift_2, shift_3, shift_4, shift_5, shift_6, shift_7, shift_8 : integer:=0;
 	signal shift_speed	:	integer :=5;
+	signal r,g,b : std_logic_vector(7 downto 0);
 begin
 
 	--statisch raster maken
@@ -92,27 +92,30 @@ begin
 	process(pixel_clk, reset, data_in)
 	begin
 	if(reset = '1') then
-		r <= '1';
-		g <= '1';
-		b <= '1';
-	elsif(reset = '0') then
+		r(0) <= '1';
+		g(0) <= '1';
+		b(0) <= '1';
+	elsif(rising_edge(pixel_clk)) then
+		r(1) <= '0';
+		g(1) <= '0';
+		b(1) <= '0';
 		if(display_enable = '1') then
 			if(data_in = "00000") then --stop
-				r <= '1';
-				g <= '0';
-				b <= '0';
+				r(0) <= '1';
+				g(0) <= '0';
+				b(0) <= '0';
 			elsif (data_in = "00001") then --note 1
 				if (Vcount >= block2_top + shift_1 and Vcount <= block2_bottom + shift_1 and Hcount >= note1_left and Hcount <= note1_right) then
-					r <= '0';
-					g <= '0';
-					b <= '1';
+					r(0) <= '0';
+					g(0) <= '0';
+					b(0) <= '1';
 					if(block2_top + shift_1 = 515) then
 						shift_1 <= 0;
 					end if;
 				elsif(Hcount >= note1_left and Hcount <= note1_right) then
-					r <= '0';
-					g <= '0';
-					b <= '0';
+					r(0) <= '0';
+					g(0) <= '0';
+					b(0) <= '0';
 				end if;
 			end if;
 		end if;
@@ -127,23 +130,26 @@ begin
 	process(pixel_clk, reset, data_in)
 	begin
 	if(reset = '1') then
-		r <= '1';
-		g <= '1';
-		b <= '1';
-	elsif(reset = '0') then
+		r(1) <= '1';
+		g(1) <= '1';
+		b(1) <= '1';
+	elsif(rising_edge(pixel_clk)) then
+		r(1) <= '0';
+		g(1) <= '0';
+		b(1) <= '0';
 		if(display_enable = '1') then
 			if (data_in = "00100") then --note 2
 				if (Vcount >= block2_top + shift_2 and Vcount <= block2_bottom + shift_2 and Hcount >= note2_left and Hcount <= note2_right) then
-					r <= '1';
-					g <= '0';
-					b <= '0';
+					r(1) <= '1';
+					g(1) <= '0';
+					b(1) <= '0';
 					if(block2_top + shift_2 = 515) then
 						shift_2 <= 0;
 					end if;
 				elsif(Hcount >= note2_left and Hcount <= note2_right) then
-					r <= '0';
-					g <= '0';
-					b <= '0';
+					r(1) <= '0';
+					g(1) <= '0';
+					b(1) <= '0';
 				end if;
 			end if;
 		end if;
@@ -152,6 +158,8 @@ begin
 		end if;
 	end if;
 	end process;
+
+	r_out <= r(0) or r(1);
 
 --		p3:
 --	process(pixel_clk, reset, data_in)
