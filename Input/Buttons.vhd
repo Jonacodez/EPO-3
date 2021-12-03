@@ -9,6 +9,7 @@ port(
 	KEY2 : in std_logic;
 	KEY3 : in std_logic;
 	SW0  : in std_logic;
+	SW1  : in std_logic;
 	notes_OUT : out std_logic_vector(4 downto 0)
      );
 end buttons;
@@ -96,6 +97,9 @@ begin
 					notes_OUT <= "11000";
 				end if;
 			end if;
+		end if;
+		if SW1 = '1' then
+			notes_OUT <= "00000";
 		end if;
 	end process;
 end architecture;
