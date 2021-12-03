@@ -99,7 +99,9 @@ begin
 			end if;
 		end if;
 		if SW1 = '1' then
-			notes_OUT <= "00000";
+			if KEY0 = '1' then
+				notes_OUT <= "00000";
+			end if;
 		end if;
 	end process;
 end architecture;
