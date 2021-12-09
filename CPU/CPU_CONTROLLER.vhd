@@ -37,7 +37,7 @@ begin
 			if( notes_OUT = notesA_OUT) then
 				next_state <= true;
 			else 
-				next_state <= reset;
+				next_state <= false;
 			end if;
 
 		when true =>
