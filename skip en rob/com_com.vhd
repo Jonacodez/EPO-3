@@ -4,6 +4,7 @@ use IEEE.std_logic_1164.ALL;
 
 entity com_com is
 port	(ard_in	: in std_logic_vector(4 downto 0);
+	confirm : in std_logic;
 	mat_in  : in std_logic_vector(2 downto 0);
 	succes	: in std_logic;
 	clk	: in std_logic;
@@ -23,23 +24,32 @@ port	(clk	: in std_logic;
 	clk2	: out std_logic);
 end component;
 
-type states is (loading, shifting, sel_state, res_state);
-signal state, new_state: states;
-signal a_in, a_out, a_d: std_logic_vector(4 downto 0);
+type states is (loading, shifting1, shifting2, sel_state, sel_state_wate, res_state);
+signal state: states; 
+signal new_state: states:= sel_state;
+signal a_in, a_out: std_logic_vector(4 downto 0);
+signal con_d: std_logic;
 signal ss: std_logic_vector(2 downto 0);
-signal sh, nclk, res_tb: std_logic;
+signal sh, nclk, res_tb, suc: std_logic;
 
 begin
 
 l1: com_timebase port map (clk, res_tb, nclk);
 
-	process(clk)
+	stijger: process(clk)
 	begin
 	if reset = '1' then 
-		new_state <= res_state;
+		state <= res_state;
 	else
+		if rising_edge(clk) then
+			state <= new_state;
+		end if;
+	end if;
+	end process;
+	
+	fsm: process(clk)
+	begin
 	if rising_edge(clk) then
-		state <= new_state;
 		case state is
 			when res_state => 
 				res_tb <= '1';
@@ -50,33 +60,44 @@ l1: com_timebase port map (clk, res_tb, nclk);
 				ss <= mat_in;
 				if mat_in = "000" then
 					new_state <= state;
-				else 
+				else
+					new_state <= sel_state_wate;
+				end if;
+			when sel_state_wate =>
+				con_d <= confirm;
+				if con_d /= confirm then
 					new_state <= loading;
 				end if;
 			when loading => 
 				res_tb <= '0';
 				sh <= '0';
-				a_d <= a_in;
-				if a_d /= a_in then
-					a_out <= a_d;
+				con_d <= confirm;
+				if con_d /= confirm then
+					a_out <= a_in;
 					sh <= '1';
 				end if;
 				if a_in = "00000" then
-					new_state <= shifting;
+					new_state <= shifting1;
 				end if;
-			when shifting =>
+			when shifting1 =>
 				res_tb <= '1';
 				sh <= '0';
-				if succes = '1' then
+				if suc = '1' then
 					sh <= '1';
+					new_state <= shifting2;
+				elsif end_bit = '1' then
+					new_state <= sel_state_wate;
+				else
+					new_state <= state;
 				end if;
-				if end_bit = '1' then 
-					new_state <= sel_state;
-				end if;
+			when shifting2 =>
+				new_state <= shifting1;
+				
 		end case;
 	end if;
-	end if;
-end process;
+	end process;
+
+suc <= succes;
 a_in <= ard_in;
 arr_out <= a_out;
 song_sel <= ss;

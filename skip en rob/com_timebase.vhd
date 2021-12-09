@@ -22,7 +22,7 @@ begin
 process(clk, reset) --clock count
 begin
     if (rising_edge(clk)) then
-        if cnt = "00101" or reset = '1' then
+        if cnt = "01001" or reset = '1' then
             new_cnt <= "00000";
         else
             new_cnt <= cnt + 1;
@@ -36,7 +36,7 @@ begin
         if reset = '1' then
             clki <= '0';
         else
-            if cnt = "00101" then
+            if cnt = "01001" then
             clki <= not clki2;
             end if;
         end if;
