@@ -15,7 +15,7 @@ port(
 end processor;
 
 architecture behavioural of processor is 
-type statetype is ( reset, true);
+type statetype is ( reset, true, false);
 signal state, next_state : statetype;
 
 begin 
@@ -44,6 +44,9 @@ begin
 			succesbit_pwm <= '1';
 			succesbit_gpu <= '1';
 			succesbit_bitshifter <= '1'; 
+		when false =>
+			succesbit_gpu <= '0';
+			next_state <= reset;
 end case;
 end process;
 end architecture behavioural; 
