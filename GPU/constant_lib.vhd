@@ -13,38 +13,62 @@ package constants_package is
 	constant size2: integer := 50;
 	constant size3: integer := 80;
 
-	constant block1_top: integer := h2;
-	constant block1_bottom: integer := h2 + size1;
+	constant block1_top: integer := v2;
+	constant block1_bottom: integer := v2 + size1;
 
-	constant block2_top: integer := h2;
-	constant block2_bottom: integer := h2 + size2;
+	constant block2_top: integer := v2;
+	constant block2_bottom: integer := v2 + size2;
 
-	constant block3_top: integer := h2;
-	constant block3_bottom: integer := h2 + size3;
+	constant block3_top: integer := v2;
+	constant block3_bottom: integer := v2 + size3;
 
-	constant note1_left: integer:= 2+57 ;
-	constant note1_right: integer:= 2;
+	constant note1_left: integer:= 144 + 0;
+	constant note1_right: integer:= 144 + 79;
 
-	constant note2_left: integer:=2+57+2+58;
-	constant note2_right: integer:=2+57+2;
+	constant note1_top: integer:= v2 + 420;
+	constant note1_bottom: integer := v2 + 480; 
 
-	constant note3_left: integer:=2+57+2+58+2+58;
-	constant note3_right: integer:=2+57+2+58+2;
+	constant note2_left: integer:= 144 + 80;
+	constant note2_right: integer:= 144 + 159;
 
-	constant note4_left: integer:=2+57+2+58+2+58+2+58;
-	constant note4_right: integer:=2+57+2+58+2+58+2;
+	constant note2_top: integer:= v2 + 360;
+	constant note2_bottom: integer := v2 + 420;
 
-	constant note5_left: integer:=2+57+2+58+2+58+2+58+2+58;
-	constant note5_right: integer:=2+57+2+58+2+58+2+58+2;
+	constant note3_left: integer:= 144 + 160;
+	constant note3_right: integer:= 144 + 239;
+
+	constant note3_top: integer:= v2 + 300;
+	constant note3_bottom: integer := v2 + 360;
+
+	constant note4_left: integer:= 144 + 240;
+	constant note4_right: integer:= 144 + 319;
+
+	constant note4_top: integer:= v2 + 240;
+	constant note4_bottom: integer := v2 + 300;
+
+	constant note5_left: integer:= 144 + 320;
+	constant note5_right: integer:= 144 + 399;
+
+	constant note5_top: integer:= v2 + 180;
+	constant note5_bottom: integer := v2 + 240;
  
-	constant note6_left: integer:=2+57+2+58+2+58+2+58+2+58+2+58;
-	constant note6_right: integer:=2+57+2+58+2+58+2+58+2+58+2;
+	constant note6_left: integer:= 144 + 400;
+	constant note6_right: integer:= 144 + 479;
 
-	constant note7_left: integer:=2+57+2+58+2+58+2+58+2+58+2+58+2+58;
-	constant note7_right: integer:=2+57+2+58+2+58+2+58+2+58+2+58+2;
+	constant note6_top: integer:= v2 + 120;
+	constant note6_bottom: integer := v2 + 180;
 
-	constant note8_left: integer:=2+57+2+58+2+58+2+58+2+58+2+58+2+58+2+57;
-	constant note8_right: integer:=2+57+2+58+2+58+2+58+2+58+2+58+2+58+2;
+	constant note7_left: integer:= 144 + 480;
+	constant note7_right: integer:= 144 + 559;
+
+	constant note7_top: integer:= v2 + 60;
+	constant note7_bottom: integer := v2 + 120;
+
+	constant note8_left: integer:= 144 + 560; --nice
+	constant note8_right: integer:= 144 + 640;
+
+	constant note8_top: integer:= v2 + 0;
+	constant note8_bottom: integer := v2 + 60;
 end package constants_package;
 
 package body constants_package is
