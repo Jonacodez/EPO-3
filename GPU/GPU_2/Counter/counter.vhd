@@ -53,5 +53,5 @@ begin
 	end process;
 	Vsync <= Vsync_int;
 	Hsync <= Hsync_int;
-	display_enable <= Hsync_int and Vsync_int;
+	display_enable <= '1' when unsigned(Hcount) > h2 and unsigned (Hcount) < h3 and unsigned(Vcount) > v2 and unsigned(Vcount) < v3;
 end architecture behavioural;
