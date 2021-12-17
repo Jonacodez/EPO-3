@@ -4,12 +4,6 @@ use ieee.numeric_std.all;
 
 architecture behaviour of pulse_length is
 
-component pulse_length port (
-	clk                  	: in  std_logic;
-	reset                 	: in  std_logic;
-	input_s			: in std_logic;
-	pulse_len		: out std_logic_vector(2 downto 0));
-end component;
 
 signal count, new_count             : std_logic_vector(14 downto 0);
 signal pulse                 : std_logic_vector(14 downto 0);
