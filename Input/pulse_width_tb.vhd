@@ -30,7 +30,7 @@ u1: pulse_length port map(clock,rst,input,p_len);
         	clock <= '1';
         	wait for 20 ns;
    	 end process;
-	  rst <= '1', '0' after 20 ns;	
+	  rst <= '1', '0' after 20 ns, '1' after 420 ns;	
 
 	input <= 
 	'1' after 0 ns,
