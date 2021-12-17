@@ -27,7 +27,7 @@ signal input 	 : std_logic;
 signal pulse_len : std_logic_vector(2 downto 0);
 begin
 	u1: pulse_length port map(clk=>'0',reset=>'0',input_s=>'0',pulse_len=>pulse_len);
-	process(SW0)
+	process(SW0,KEY0,KEY1,KEY2,KEY3,SW1)
 	begin
 		if SW0 = '0' then
 			if KEY0 = '1' then
