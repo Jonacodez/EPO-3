@@ -23,12 +23,12 @@ begin
             	'0' after 650 ns;
     
     clk <= 	'0' after 0 ns,
-           	'1' after 5 ns when clk /= '1' else '0' after 5 ns;
+           	'1' after 20 ns when clk /= '1' else '0' after 20 ns;
 
     input <=	'0' after 0 ns,
 		'1' after 330 ns,
 		'0' after 600 ns,
-		'1' after 960 ns,
+		'1' after 970 ns,
 		'0' after 1180 ns,
 		'1' after 1400 ns;
  
