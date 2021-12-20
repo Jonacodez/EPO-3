@@ -23,10 +23,10 @@ l1: com_timebase port map (clk, res_tb, handshake);
 
 	stijger: process(clk, reset)
 	begin
-	if reset = '1' then 
-		state <= res_state;
-	else
-		if rising_edge(clk) then
+	if rising_edge(clk) then
+		if reset = '1' then 
+			state <= res_state;
+		else
 			state <= new_state;
 			ss <= ss_new;
 			a_out <= a_out_new;
