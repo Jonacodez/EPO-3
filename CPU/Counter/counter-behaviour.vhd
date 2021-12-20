@@ -8,6 +8,7 @@ signal d      : 	std_logic_vector (8 downto 0);
 signal s_1, s_2,s   :	 std_logic_vector (26 downto 0);
 signal count_o : std_logic;
 signal rest : std_logic;
+signal count_out_s	: std_logic;
 begin
 
 process (notes_OUT)
