@@ -7,21 +7,29 @@ entity pulse_length is
 port (
 	clk                  	: in  std_logic;
 	reset                 	: in  std_logic;
-	input_s			: in std_logic;
 	pulse_len		: out std_logic_vector(2 downto 0));
 end pulse_length;
 	
 architecture behaviour of pulse_length is
+	
+component detect_input port(   
+	KEY0 : in std_logic;
+	KEY1 : in std_logic;
+	KEY2 : in std_logic;
+	KEY3 : in std_logic;
+	input_s : out std_logic
+     );
+end component;
 
 type state_type is (res_state,state_s0,state_s1,state_s11);
 signal state			:state_type;
 signal new_state 					:state_type;
 signal count , new_count  : std_logic_vector(26 downto 0);
 signal pulse            : std_logic_vector(26 downto 0);
-
+signal input_s		:std_logic;
 
 begin
-
+u1: detect_input port map(KEY0='0',KEY1='0',KEY2='0',KEY3='0',input_s = input_s);
     process(clk, reset)
     begin  
 	if rising_edge(clk) then  
