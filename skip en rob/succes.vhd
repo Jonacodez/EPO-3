@@ -8,7 +8,7 @@ port(	clk		: in std_logic;
 	succes		: out std_logic);
 end succes_com;
 
-architecture behav of succes_com is
+architecture behaviour of succes_com is
 	type states is (res_state, check_state, wait_state);
 	signal state, new_state	: states;
 	signal new_succes : std_logic;
@@ -58,4 +58,4 @@ begin
 	
 end process;
 
-end behav;
+end behaviour;
