@@ -19,14 +19,13 @@ architecture behaviour of buttons is
 component pulse_length port(
 	clk         	: in  std_logic;
 	reset        	: in  std_logic;
-	input_s		: in std_logic;
 	pulse_len	: out std_logic_vector(2 downto 0));
 end component;
 
 
 signal pulse_len : std_logic_vector(2 downto 0);
 begin
-	u1: pulse_length port map(clk=>'0',reset=>'0',input_s=>'0',pulse_len=>pulse_len);
+	u1: pulse_length port map(clk=>'0',reset=>'0',pulse_len=>pulse_len);
 	process(SW0,KEY0,KEY1,KEY2,KEY3,SW1)
 	begin
 		if SW0 = '0' then
