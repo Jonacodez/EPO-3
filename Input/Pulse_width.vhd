@@ -7,8 +7,8 @@ architecture behaviour of pulse_length is
 type state_type is (res_state,state_s0,state_s1,state_s11);
 signal state			:state_type;
 signal new_state 					:state_type;
-signal count , new_count  : std_logic_vector(14 downto 0);
-signal pulse            : std_logic_vector(14 downto 0);
+signal count , new_count  : std_logic_vector(26 downto 0);
+signal pulse            : std_logic_vector(26 downto 0);
 
 
 begin
@@ -17,8 +17,8 @@ begin
     begin  
 	if rising_edge(clk) then  
         		if reset = '1' then
-			  count <= (others => '0');
             		state <= res_state;
+			 count <= (others => '0');
         		else
             		state <= new_state;
 			  count <= new_count;
@@ -26,13 +26,13 @@ begin
 	end if;
     end process;
 
-    process(clk,reset, input_s)
+   process(input_s, count, state)
     begin
+		  pulse <= (others => '0');
 		case state is
             when res_state =>
+
                 new_count <= (others => '0');
-                pulse <= (others => '0');
-                pulse_len <= "000";
                 if input_s = '0' then
                     new_state <= state_s0;
                 elsif input_s = '1' then
@@ -42,7 +42,6 @@ begin
                 end if;
             
             when state_s0 =>
-                pulse_len <= "000";
                 new_count <= std_logic_vector(unsigned(count) + 1);
                 if input_s = '0' then
                     new_state <= state_s0;
@@ -53,17 +52,11 @@ begin
                 end if;
 
             when state_s1 =>
-				pulse_len <= "000";
                 pulse <= new_count;
 				new_count <= count;
-				if reset = '1' then
-					new_state <= res_state;
-				else
-					new_state <= state_s11;
-				end if;
+				new_state <= state_s11;
 
             when state_s11 =>
-				pulse_len <= "000";
                 new_count <= (others => '0');
                 if input_s = '0' then
                     new_state <= state_s0;
@@ -75,9 +68,9 @@ begin
 	end case;
     end process;
 
-process (clk)
+process (pulse)
 begin
-    if rising_edge(clk) then
+
         if pulse >= "00100111101100" then
             pulse_len <= "001";
         elsif pulse >= "01001111011000" then
@@ -87,6 +80,6 @@ begin
         else
             pulse_len <= "000";
         end if;
-    end if;
+
 end process;    
 end behaviour;
