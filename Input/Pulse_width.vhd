@@ -2,6 +2,15 @@ library IEEE;
 use IEEE.std_logic_1164.ALL;
 use ieee.numeric_std.all;
 
+
+entity pulse_length is
+port (
+	clk                  	: in  std_logic;
+	reset                 	: in  std_logic;
+	input_s			: in std_logic;
+	pulse_len		: out std_logic_vector(2 downto 0));
+end pulse_length;
+	
 architecture behaviour of pulse_length is
 
 type state_type is (res_state,state_s0,state_s1,state_s11);
