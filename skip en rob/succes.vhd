@@ -28,7 +28,7 @@ begin
 	end if;
 end process;
 
-process(clk, reset, input)
+process(state, input)
 begin
 	
 		case state is
