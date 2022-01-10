@@ -15,10 +15,10 @@ architecture behv of shift_reg is
 	constant sr_depth : integer := 9;
     	constant sr_width : integer := 5;
 	
-	type states is (res_state, loading1, loading2, shifting);
+	type states is (res_state, loading2, filter1, filter2, shifting);
     	type sr_type is array (sr_depth - 2 downto 0)
     	of std_logic_vector(sr_width - 1 downto 0);
-	signal sr: sr_type;
+	signal sr, sr_new: sr_type;
 	signal state, new_state: states;
 
 begin
@@ -30,46 +30,58 @@ if rising_edge(clk) then
 		state <= res_state;
 	else 
 		state <= new_state;
+		sr <= sr_new;
 	end if;
 end if;	
 end process;
 
-process(clk)
+process(state, input, reset, shift)
 begin
-	if rising_edge(clk) then
 		case state is
 			when res_state =>
 				end_bit <= '0';
-       		    		sr <= sr(sr'high - 1 downto sr'low) & "00000";
+       		    		sr_new <= (others => "00000");
 				if reset = '0' then
-					new_state <= loading1;
-				end if;
-			when loading1 =>
-				end_bit <= '0';
-				if shift = '1' then
-					sr <= sr(sr'high - 1 downto sr'low) & input;
 					new_state <= loading2;
+				else new_state <= res_state;
 				end if;
 			when loading2 =>
 				end_bit <= '0';
 				if shift = '1' then
-					sr <= sr(sr'high - 1 downto sr'low) & input;
-					if sr(sr'low) = "00000" then 
-						new_state <= shifting;
+					sr_new <= sr(sr'high - 1 downto sr'low) & input;
+					if input = "00000" then 
+						new_state <= filter1;
+					else 
+						new_state <= loading2;
 					end if;
+				else new_state <= loading2;
+					sr_new <= sr;
 				end if;
+			when filter1 =>
+				end_bit <= '0';
+				sr_new <= sr;
+				if sr(sr'high) = "11110" then 
+					new_state <= filter2;
+				else new_state <= shifting;
+				end if;
+			when filter2 =>
+				end_bit <= '0';
+				sr_new <= sr(sr'high - 1 downto sr'low) & "00000";
+				new_state <= filter1;
 			when shifting =>
 				end_bit <= '0';
 				if sr(sr'high) = "00000" then
-					new_state <= loading1;
+					new_state <= loading2;
 					end_bit <= '1';
-				else 
+					sr_new <= sr;
+				else
+					new_state <= state;
 					if shift = '1' then
-						sr <= sr(sr'high - 1 downto sr'low) & "00000";
+						sr_new <= sr(sr'high - 1 downto sr'low) & "00000";
+					else sr_new <= sr;
 					end if;
 				end if;
 		end case;
-	end if;
 end process;
 
 	output0 <= sr(sr'high);
