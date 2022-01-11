@@ -12,8 +12,8 @@ signal count , new_count  : std_logic_vector(26 downto 0);
 signal pulse            : std_logic_vector(26 downto 0);
 
 
-begin
 
+begin
 
     process(clk, reset)
     begin  
@@ -24,20 +24,21 @@ begin
         		else
             		state <= new_state;
 			  count <= new_count;
+			
         		end if;
 	end if;
     end process;
 
-   process(input_s, count, state)
+   process(input_p, count, state)
     begin
 		  pulse <= (others => '0');
 		case state is
             when res_state =>
 
                 new_count <= (others => '0');
-                if input_s = '1' then
+                if input_p = '1' then
                     new_state <= state_s0;
-                elsif input_s = '0' then
+                elsif input_p = '0' then
                     new_state <= state_s1;
                 else
                     new_state <= res_state;
@@ -45,9 +46,9 @@ begin
             
             when state_s0 =>
                 new_count <= std_logic_vector(unsigned(count) + 1);
-                if input_s = '1' then
+                if input_p = '1' then
                     new_state <= state_s0;
-                elsif input_s = '0' then
+                elsif input_p = '0' then
                     new_state <= state_s1;
                 else
                     new_state <= state_s0;
@@ -60,9 +61,9 @@ begin
 
             when state_s11 =>
                 new_count <= (others => '0');
-                if input_s = '1' then
+                if input_p = '1' then
                     new_state <= state_s0;
-                elsif input_s = '0' then
+                elsif input_p = '0' then
                     new_state <= state_s1;
                 else
                     new_state <= state_s1;
@@ -82,6 +83,7 @@ begin
         else
             pulse_len <= "000";
         end if;
-
+	
 end process;    
+
 end behaviour;

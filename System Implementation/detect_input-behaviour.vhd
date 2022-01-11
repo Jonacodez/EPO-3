@@ -8,9 +8,9 @@ begin
 	process(KEY0,KEY1,KEY2,KEY3)
 	begin
 		if (KEY0 and KEY1 and KEY2 and KEY3) = '0' then
-      			input_s <= '1';
+      			input_d <= '1';
     		else
-     			input_s <= '0';
+     			input_d <= '0';
   		 end if;
    end process;
    

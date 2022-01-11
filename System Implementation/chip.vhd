@@ -5,7 +5,7 @@ entity chip is
 port(
 	clk								: in std_logic;
 	reset								: in std_logic;		
-	input1, input2, input3, input4, input5, input6, input7, input8	: in std_logic; 
+	KEY0,KEY1,KEY2,KEY3,SW0,SW1	: in std_logic; 
 	input_arduino							: in std_logic_vector (4 downto 0);
 	input_confirm			: in std_logic;
 	output_buzzer			: out std_logic;

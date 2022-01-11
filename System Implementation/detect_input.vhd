@@ -7,7 +7,7 @@ port(
 	KEY1 : in std_logic;
 	KEY2 : in std_logic;
 	KEY3 : in std_logic;
-	input_s : out std_logic
+	input_d : out std_logic
      );
 end entity;
 

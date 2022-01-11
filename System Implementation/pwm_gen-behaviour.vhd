@@ -4,8 +4,8 @@ use ieee.numeric_std.all;
 
 architecture behaviour of pwm_gen is
 
-signal count, new_count : std_logic_vector (26 downto 0);
-signal count_s, new_count_s : std_logic_vector (26 downto 0); 
+signal count, new_count : std_logic_vector (25 downto 0);
+signal count_s, new_count_s : std_logic_vector (25 downto 0); 
 signal d      : 	std_logic_vector (8 downto 0);
 signal count_o : std_logic;
 signal rest : std_logic;
@@ -70,9 +70,9 @@ end process;
 process (count, input_s, d)
 begin
 	if (input_s = '1') then
-		new_count <= std_logic_vector(unsigned(count) + resize(unsigned(d),24));
+		new_count <= std_logic_vector(unsigned(count) + resize(unsigned(d),26));
 	else
-		new_count <= count;
+		new_count <= (others => '0');
 	end if;
 end process;
 
@@ -108,9 +108,9 @@ begin
 		new_count_s <= std_logic_vector(unsigned(count_s)  + 1);
 
 	else
-		new_count_s <= count_s;
+		new_count_s <= (others => '0');
 	end if;
 end process;
 count_out_s<= count_o;
-pwm_out <= count(23) and count_out_s;
+pwm_out <= count(25) and count_out_s;
 end behaviour;

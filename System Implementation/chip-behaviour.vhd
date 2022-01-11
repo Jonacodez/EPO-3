@@ -8,11 +8,42 @@ architecture behaviour of chip is
 		 port	(clk       : in  std_logic;
         		reset      : in  std_logic;
         		succes_bit : in  std_logic;
-       			notes_OUT  : in  std_logic_vector(4 downto 0); 
-			 input_s : in std_logic;
+       		notes_OUT  : in  std_logic_vector(4 downto 0); 
+		input_s : in std_logic;
         		pwm_out  : out std_logic);
 	end component pwm_gen;
-	
+
+	component detect_input port(   
+		KEY0 : in std_logic;
+		KEY1 : in std_logic;
+		KEY2 : in std_logic;
+		KEY3 : in std_logic;
+		input_d : out std_logic
+     );
+	end component detect_input;
+
+	component pulse_length port(
+		clk         	: in  std_logic;
+		reset        	: in  std_logic;
+		input_p				: in std_logic;
+		pulse_len	: out std_logic_vector(2 downto 0));
+	end component pulse_length;
+
+	component button port(
+		clk  : in std_logic;
+		reset : in std_logic;
+		pulse_len	: in std_logic_vector(2 downto 0);
+		KEY0 : in std_logic;
+		KEY1 : in std_logic;
+		KEY2 : in std_logic;
+		KEY3 : in std_logic;
+		SW0  : in std_logic;
+		SW1  : in std_logic;
+		song_select : out std_logic_vector(2 downto 0);
+		notes_OUT : out std_logic_vector(4 downto 0));
+	end component button;
+
+
 	component processor is
 		port( 
 			clk			: in std_logic;
@@ -44,79 +75,34 @@ architecture behaviour of chip is
 			Hsync, Vsync		:	out std_logic
 		);
 	end component toplevel_GPU;
-	
-	component toplevel_INPUT is
-	port(
-		clk   : in  std_logic;
-		reset : in  std_logic;
-		KEY0 : in std_logic;
-		KEY1 : in std_logic;
-		KEY2 : in std_logic;
-		KEY3 : in std_logic;
-		SW0  : in std_logic;
-		SW1  : in std_logic;
-		input_s	: out std_logic;
-		notes_OUT : out std_logic_vector(4 downto 0)
-	);
-	end component toplevel_INPUT;
-	
-	
+		
 	signal succesbit_pwm								: std_logic;
 	signal succesbit_gpu								: std_logic;
 	signal succesbit_bit								: std_logic;
-	signal input_mat  								: std_logic_vector(2 downto 0);
+	signal song_select  								: std_logic_vector(2 downto 0);
 	signal output0, output1, output2, output3, output4, output5, output6, output7	: std_logic_vector (4 downto 0);
 	signal notes_OUT								: std_logic_vector (4 downto 0);
 	signal input									: std_logic_vector(7 downto 0);
 	signal pulse_len								: std_logic_vector (2 downto 0);
-	signal input_s								: std_logic;
+	signal input_d								: std_logic;
+
 
 begin
 
-input(0) <= input1;
-input(1) <= input2;
-input(2) <= input3;
-input(3) <= input4;
-input(4) <= input5;
-input(5) <= input6;
-input(6) <= input7;
-input(7) <= input8;
-
-	process (input)
 	
-	begin
-		case input is
-			when "00001111" => 
-				input_mat <= "000";
-			when "00001110" => 
-				input_mat <= "001";
-			when "00001101" => 
-				input_mat <= "010";
-			when "00001011" => 
-				input_mat <= "011";
-			when "00000111" => 
-				input_mat <= "100";
-			when "00011111" => 
-				input_mat <= "101";
-			when "00101011" => 
-				input_mat <= "110";
-			when "01001111" => 
-				input_mat <= "111";
-			when  others   => 
-				input_mat <= "000";
-		end case;
-	end process;
-	
+toplevel_BUZZER1: pwm_gen port map(clk, reset, succesbit_pwm, output0, input_d,output_buzzer);
 
-toplevel_BUZZER1: pwm_gen port map(clk, reset, succesbit_pwm, output0, input_s,output_buzzer);
+dec:detect_input port map(KEY0,KEY1,KEY2,KEY3,input_d);
+
+pulse:pulse_length port map (clk,reset,input_d,pulse_len);
+
+but:button port map(clk, reset, pulse_len,KEY0,KEY1,KEY2,KEY3,SW0,SW1,song_select,notes_OUT);
 			  
 cpu_controller1: processor port map(clk, reset, notes_OUT, output0, succesbit_pwm, succesbit_gpu, succesbit_bit); 
 
-toplevel_RAM1: toplevel_RAM port map(input_arduino, input_confirm, input_mat, succesbit_bit, clk, reset, output_song_select, output_handshake, output0, output1, output2, output3, output4, output5, output6, output7);
+toplevel_RAM1: toplevel_RAM port map(input_arduino, input_confirm, song_select, succesbit_bit, clk, reset, output_song_select, output_handshake, output0, output1, output2, output3, output4, output5, output6, output7);
 
 gpu1: toplevel_GPU port map(clk, reset, output0, output1, output2, output3, output4, output5, output6, output7, r, g, b, Hsync, Vsync);
 
-toplevel_INPUT1: toplevel_INPUT port map (clk, reset, input1, input2, input3, input4, input5, input6,input_s,notes_OUT);
 
 end behaviour;
-
