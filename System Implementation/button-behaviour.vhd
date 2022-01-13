@@ -67,6 +67,9 @@ buf2: input_buffer port map(s1(0), s1(1), s1(2), s1(3), s1(4), clk, reset,
 					notes_OUT  <= "00100";
 				end if;
 				song_select <= "100";
+			else 
+				notes_OUT  <= "00100";  --blank, om latches te verkomen
+				song_select <= "000";
 			end if;
 		elsif s2(0) = '1' then
 			if s2(1) = '0' then
