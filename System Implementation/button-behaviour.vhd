@@ -31,7 +31,7 @@ buf2: input_buffer port map(s1(0), s1(1), s1(2), s1(3), s1(4), clk, reset,
 				elsif pulse_len = "100" then
 					notes_OUT  <= "00011"; --C1 long
 				else
-					notes_OUT  <= "00100";
+					notes_OUT  <= "00000";
 				end if;
 				song_select <= "001";
 			elsif s2(2) = '0' then
@@ -53,7 +53,7 @@ buf2: input_buffer port map(s1(0), s1(1), s1(2), s1(3), s1(4), clk, reset,
 				elsif pulse_len = "100" then
 					notes_OUT  <= "01011"; --E long
 				else
-					notes_OUT  <= "00100";
+					notes_OUT  <= "01000";
 				end if;
 				song_select <= "011";
 			elsif s2(4) = '0' then
@@ -64,7 +64,7 @@ buf2: input_buffer port map(s1(0), s1(1), s1(2), s1(3), s1(4), clk, reset,
 				elsif pulse_len = "100" then
 					notes_OUT  <= "01111"; --F long
 				else
-					notes_OUT  <= "00100";
+					notes_OUT  <= "01100";
 				end if;
 				song_select <= "100";
 			else 
@@ -80,7 +80,7 @@ buf2: input_buffer port map(s1(0), s1(1), s1(2), s1(3), s1(4), clk, reset,
 				elsif pulse_len = "100" then
 					notes_OUT  <= "10011"; --G long
 				else
-					notes_OUT  <= "00100";
+					notes_OUT  <= "10000";
 				end if;
 				song_select <= "101";
 			elsif s2(2) = '0' then
@@ -91,7 +91,7 @@ buf2: input_buffer port map(s1(0), s1(1), s1(2), s1(3), s1(4), clk, reset,
 				elsif pulse_len = "100" then
 					notes_OUT  <= "10111"; --A long
 				else
-					notes_OUT  <= "00100";
+					notes_OUT  <= "10100";
 				end if;
 				song_select <= "110";
 			elsif s2(3) = '0' then
@@ -102,7 +102,7 @@ buf2: input_buffer port map(s1(0), s1(1), s1(2), s1(3), s1(4), clk, reset,
 				elsif pulse_len = "100" then
 					notes_OUT  <= "11011"; --B long
 				else
-					notes_OUT  <= "00100";
+					notes_OUT  <= "11000";
 				end if;
 				song_select <= "111";
 			elsif s2(4) = '0' then
@@ -113,7 +113,7 @@ buf2: input_buffer port map(s1(0), s1(1), s1(2), s1(3), s1(4), clk, reset,
 				elsif pulse_len = "100" then
 					notes_OUT <= "11111"; --C2 long
 				else
-					notes_OUT  <= "00100";
+					notes_OUT  <= "11100";
 				end if;
 				song_select <= "000";
 			else 
