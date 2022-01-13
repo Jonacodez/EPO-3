@@ -19,7 +19,7 @@ buf2: input_buffer port map(s1(0), s1(1), s1(2), s1(3), s1(4), clk, reset,
 			s2(0), s2(1), s2(2), s2(3), s2(4));
 
 	
-	process(s2, pulse_len, SW1)
+	process(s2, pulse_len)
 	begin
 	
 		if s2(0) = '0' then 
@@ -117,12 +117,9 @@ buf2: input_buffer port map(s1(0), s1(1), s1(2), s1(3), s1(4), clk, reset,
 				notes_OUT  <= "00100";  --blank, om latches te verkomen
 				song_select <= "000";
 			end if;
-		end if;
-		if SW1 = '1' then
-			if s2(1) = '0' then
-				notes_OUT  <= "00000";  --stop bit
-				song_select <= "000";
-			end if;
+		else 
+			notes_OUT <= "00100";
+			song_select <= "000";
 		end if;
 	end process;
 
