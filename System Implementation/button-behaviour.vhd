@@ -23,7 +23,7 @@ buf2: input_buffer port map(s1(0), s1(1), s1(2), s1(3), s1(4), clk, reset,
 	begin
 	
 		if s2(0) = '0' then 
-			if s2(1) = '0' then
+			if s2(4) = '0' then
 				if pulse_len = "001" then
 					notes_OUT  <= "00001"; --C1 short 
 				elsif pulse_len = "010" then 
@@ -34,7 +34,7 @@ buf2: input_buffer port map(s1(0), s1(1), s1(2), s1(3), s1(4), clk, reset,
 					notes_OUT  <= "00000";
 				end if;
 				song_select <= "001";
-			elsif s2(2) = '0' then
+			elsif s2(3) = '0' then
 				if pulse_len = "001" then
 					notes_OUT  <= "00101"; --D short
 				elsif pulse_len = "010" then
@@ -45,7 +45,7 @@ buf2: input_buffer port map(s1(0), s1(1), s1(2), s1(3), s1(4), clk, reset,
 					notes_OUT  <= "00100";
 				end if;
 				song_select <= "010";
-			elsif s2(3) = '0' then
+			elsif s2(2) = '0' then
 				if pulse_len = "001" then
 					notes_OUT  <= "01001"; --E short
 				elsif pulse_len = "010" then
@@ -56,7 +56,7 @@ buf2: input_buffer port map(s1(0), s1(1), s1(2), s1(3), s1(4), clk, reset,
 					notes_OUT  <= "01000";
 				end if;
 				song_select <= "011";
-			elsif s2(4) = '0' then
+			elsif s2(1) = '0' then
 				if pulse_len = "001" then
 					notes_OUT  <= "01101"; --F short
 				elsif pulse_len = "010" then
@@ -72,7 +72,7 @@ buf2: input_buffer port map(s1(0), s1(1), s1(2), s1(3), s1(4), clk, reset,
 				song_select <= "000";
 			end if;
 		elsif s2(0) = '1' then
-			if s2(1) = '0' then
+			if s2(4) = '0' then
 				if pulse_len = "001" then
 					notes_OUT  <= "10001"; --G short
 				elsif pulse_len = "010" then
@@ -83,7 +83,7 @@ buf2: input_buffer port map(s1(0), s1(1), s1(2), s1(3), s1(4), clk, reset,
 					notes_OUT  <= "10000";
 				end if;
 				song_select <= "101";
-			elsif s2(2) = '0' then
+			elsif s2(3) = '0' then
 				if pulse_len = "001" then
 					notes_OUT  <= "10101"; --A short
 				elsif pulse_len = "010" then
@@ -94,7 +94,7 @@ buf2: input_buffer port map(s1(0), s1(1), s1(2), s1(3), s1(4), clk, reset,
 					notes_OUT  <= "10100";
 				end if;
 				song_select <= "110";
-			elsif s2(3) = '0' then
+			elsif s2(2) = '0' then
 				if pulse_len = "001" then
 					notes_OUT  <= "11001"; --B short
 				elsif pulse_len = "010" then
@@ -105,7 +105,7 @@ buf2: input_buffer port map(s1(0), s1(1), s1(2), s1(3), s1(4), clk, reset,
 					notes_OUT  <= "11000";
 				end if;
 				song_select <= "111";
-			elsif s2(4) = '0' then
+			elsif s2(1) = '0' then
 				if pulse_len = "001" then     --C2 short
 					notes_OUT  <= "11101";
 				elsif pulse_len = "010" then  
