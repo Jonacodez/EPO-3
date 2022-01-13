@@ -36,7 +36,7 @@ Vcount_int <= to_integer(unsigned(Vcount));
 	end process;
 
 	p1:
-	process(output0, pixel_clk, reset) 
+	process(display_enable,Vcount_int, Hcount_int, output0, pixel_clk, reset) 
 	begin
 		r_int(3 downto 2) <= "00";
 		g_int(3 downto 2) <= "00";
@@ -301,7 +301,7 @@ Vcount_int <= to_integer(unsigned(Vcount));
 	end process;
 		
 	p2:
-	process(output1, pixel_clk, reset) 
+	process(display_enable,Vcount_int,Hcount_int,output1, pixel_clk, reset) 
 	begin
 		r_int(5 downto 4) <= "00";
 		g_int(5 downto 4) <= "00";
@@ -563,7 +563,7 @@ Vcount_int <= to_integer(unsigned(Vcount));
 	end if;
 	end process;
 	p3:
-	process(output2, pixel_clk, reset)
+	process(display_enable,Vcount_int,Hcount_int,output2, pixel_clk, reset)
 	begin
 		r_int(7 downto 6) <= "00";
 		g_int(7 downto 6) <= "00";
@@ -827,7 +827,7 @@ Vcount_int <= to_integer(unsigned(Vcount));
 
 
 	p4:
-	process(output3, pixel_clk, reset)
+	process(display_enable,Vcount_int,Hcount_int,output3, pixel_clk, reset)
 	begin
 		r_int(9 downto 8) <= "00";
 		g_int(9 downto 8) <= "00";
@@ -1090,7 +1090,7 @@ Vcount_int <= to_integer(unsigned(Vcount));
 	end process;
 
 	p5:
-	process(output4, pixel_clk, reset) 
+	process(display_enable,Vcount_int,Hcount_int,output4, pixel_clk, reset) 
 	begin
 		r_int(11 downto 10) <= "00";
 		g_int(11 downto 10) <= "00";
@@ -1353,7 +1353,7 @@ Vcount_int <= to_integer(unsigned(Vcount));
 	end process;
 
 	p6:
-	process(output5, pixel_clk, reset) 
+	process(display_enable,Vcount_int,Hcount_int,output5, pixel_clk, reset) 
 	begin
 		r_int(13 downto 12) <= "00";
 		g_int(13 downto 12) <= "00";
@@ -1616,7 +1616,7 @@ Vcount_int <= to_integer(unsigned(Vcount));
 	end process;
 
 	p7:
-	process(output6, pixel_clk, reset) 
+	process(display_enable,Vcount_int,Hcount_int,output6, pixel_clk, reset) 
 	begin
 		r_int(15 downto 14) <= "00";
 		g_int(15 downto 14) <= "00";
@@ -1879,7 +1879,7 @@ Vcount_int <= to_integer(unsigned(Vcount));
 	end process;
 
 	p8:
-	process(output7, pixel_clk, reset) 
+	process(display_enable,Vcount_int,Hcount_int,output7, pixel_clk, reset) 
 	begin
 		r_int(17 downto 16) <= "00";
 		g_int(17 downto 16) <= "00";
