@@ -8,7 +8,7 @@ type statetype is (reset, compare, true);
 signal state, next_state : statetype;
 signal next_score : std_logic_vector(1 downto 0);
 signal count, new_count	: std_logic_vector(25 downto 0);
-type statetype2 is (reset, compare, true,count1,count2);
+type statetype2 is (reset, compare, true,false,count1,count2);
 signal state2, next_state2 : statetype2;
 begin 
 process(clk, res) 
@@ -80,11 +80,17 @@ begin
 			succesbit_bit <= '0'; 
 			if(notes_OUT = notesA_OUT) then
 				next_state2 <= true;
+			elsif (notes_OUT /= notesA_OUT) then
+				next_state2 <= false;
 			else
-				next_state2 <= state2;
+				next_state2 <= compare;
 			end if;
 		when true =>
 			next_score <= std_logic_vector(unsigned(score) + 1);
+			succesbit_pwm <= '1';
+			succesbit_bit <= '1'; 
+			next_state2 <= count1;
+		when false =>
 			succesbit_pwm <= '1';
 			succesbit_bit <= '1'; 
 			next_state2 <= count1;
