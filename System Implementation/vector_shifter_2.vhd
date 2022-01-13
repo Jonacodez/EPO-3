@@ -43,8 +43,8 @@ process(state, sr, input0, input1, input2, input3, input4, input5, input6, reset
 begin
 		case state is
 			when res_state => --reset state
-       		    		sr <= (others => "00000");
-				count <= (others => '0');
+       		    		sr_new <= (others => "00000");
+				new_count <= (others => '0');
 				if reset = '0' then
 					new_state <= loading1;
 				else new_state <= res_state;
