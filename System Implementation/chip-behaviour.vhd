@@ -38,7 +38,6 @@ architecture behaviour of chip is
 		KEY2 : in std_logic;
 		KEY3 : in std_logic;
 		SW0  : in std_logic;
-		SW1  : in std_logic;
 		song_select : out std_logic_vector(2 downto 0);
 		notes_OUT : out std_logic_vector(4 downto 0));
 	end component button;
@@ -48,11 +47,12 @@ architecture behaviour of chip is
 		port( 
 			clk			: in std_logic;
 			res			: in std_logic;
+			mode			: in std_logic;
 			notes_OUT		: in std_logic_vector(4 downto 0);	--ehhh 4 downto 0???
 			notesA_OUT		: in std_logic_vector(4 downto 0);
 			succesbit_pwm		: out std_logic;
-			succesbit_gpu		: out std_logic;
-			succesbit_bit: out std_logic
+			succesbit_bit: out std_logic;
+			score				: out std_logic_vector(1 downto 0)
 		);
 	end component processor;
 
@@ -77,7 +77,6 @@ architecture behaviour of chip is
 	end component toplevel_GPU;
 		
 	signal succesbit_pwm								: std_logic;
-	signal succesbit_gpu								: std_logic;
 	signal succesbit_bit								: std_logic;
 	signal song_select  								: std_logic_vector(2 downto 0);
 	signal output0, output1, output2, output3, output4, output5, output6, output7	: std_logic_vector (4 downto 0);
@@ -85,6 +84,7 @@ architecture behaviour of chip is
 	signal input									: std_logic_vector(7 downto 0);
 	signal pulse_len								: std_logic_vector (2 downto 0);
 	signal input_d								: std_logic;
+
 
 
 begin
@@ -96,9 +96,9 @@ dec:detect_input port map(KEY0,KEY1,KEY2,KEY3,input_d);
 
 pulse:pulse_length port map (clk,reset,input_d,pulse_len);
 
-but:button port map(clk, reset, pulse_len,KEY0,KEY1,KEY2,KEY3,SW0,SW1,song_select,notes_OUT);
+but:button port map(clk, reset, pulse_len,KEY0,KEY1,KEY2,KEY3,SW0,song_select,notes_OUT);
 			  
-cpu_controller1: processor port map(clk, reset, notes_OUT, output0, succesbit_pwm, succesbit_gpu, succesbit_bit); 
+cpu_controller1: processor port map(clk, reset, mode,notes_OUT, output0, succesbit_pwm, succesbit_bit,score); 
 
 toplevel_RAM1: toplevel_RAM port map(input_arduino, input_confirm, song_select, succesbit_bit, clk, reset, output_song_select, output_handshake, output0, output1, output2, output3, output4, output5, output6, output7);
 

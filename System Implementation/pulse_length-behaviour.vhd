@@ -20,10 +20,10 @@ begin
 	if rising_edge(clk) then  
         		if reset = '1' then
             		state <= res_state;
-			 count <= (others => '0');
+						count <= (others => '0');
         		else
             		state <= new_state;
-			  count <= new_count;
+						count <= new_count;
 			
         		end if;
 	end if;
@@ -55,7 +55,7 @@ begin
                 end if;
 
             when state_s1 =>
-                pulse <= new_count;
+                pulse <= count;
 				new_count <= count;
 				new_state <= state_s11;
 
@@ -69,7 +69,7 @@ begin
                     new_state <= state_s1;
                 end if;
 	end case;
-    end process;
+   end process;
 
 process (pulse)
 begin
@@ -83,7 +83,6 @@ begin
         else
             pulse_len <= "000";
         end if;
-	
 end process;    
 
 end behaviour;
