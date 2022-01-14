@@ -46,7 +46,7 @@ begin
        		    		sr_new <= (others => "00000");
 				new_count <= (others => '0');
 				if reset = '0' then
-					new_state <= loading1;
+					new_state <= loading0;
 				else new_state <= res_state;
 				end if;
 			when loading0 => --store the data from the main array while the first note hasn't reached green line.
@@ -66,9 +66,9 @@ begin
 				end if;
 			when loading1 => --count amount of notes generated before first notes hit green line.
 				if succes = '1' then 
-					sr_new <= sr(sr'high - 1 downto sr'low) & input;
+					sr_new <= input & sr(sr'high  downto sr'low +1);
 					new_state <= loading2;
-					new_count <= count;
+					new_count <= count -1;
 				else
 					new_state <= state;
 					sr_new <= sr;
@@ -79,16 +79,21 @@ begin
 					end if;
 				end if;
 			when loading2 => --shift in the value that wasn't on list yet
-				if sr(sr'high) = "00000" then 
+				if sr(sr'low) = "00000" then 
 					sr_new <= sr;
 					new_state <= loading0;
 					new_count <= (others => '0');
 				else
 					new_state <= state;
-					new_count <= count;
 					if succes = '1' then
-						sr_new <= sr(sr'high - 1 downto sr'low) & input;
-					else sr_new <= sr;
+						sr_new <= input & sr(sr'high downto sr'low +1);
+						new_count <= count -1;
+					elsif succes_count = '1' then 
+						new_count <= count +1;
+						sr_new <= sr;
+					else 
+						sr_new <= sr;
+						new_count <= count;
 					end if;	
 				end if;
 		end case;
@@ -108,6 +113,6 @@ begin
 	end case;
 end process;
 
-output <= sr(sr'high);
+output <= sr(sr'low);
 
 end behv;
