@@ -13,6 +13,8 @@ entity com_com is
         arr_out   : out std_logic_vector(4 downto 0);
         song_sel  : out std_logic_vector(2 downto 0);
         handshake : out std_logic;
-        shift     : out std_logic);
+        shift     : out std_logic;
+	shift2    : out std_logic);
 end com_com;
+architecture behaviour of com_com is
 
