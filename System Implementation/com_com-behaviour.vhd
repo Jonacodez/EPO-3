@@ -41,6 +41,7 @@ l1: com_timebase port map (clk, res_tb, handshake);
 			when res_state => 
 				res_tb <= '1';
 				shift <= '0';
+				shift2 <= '0';
 				ss <= "000";
 				a_out_new <= "00000";
 				if reset = '0' then 
@@ -52,6 +53,7 @@ l1: com_timebase port map (clk, res_tb, handshake);
 				a_out_new <= "00000";
 				ss <= mat_in;
 				shift <= '0';
+				shift2 <= '0';
 				res_tb <= '0';
 				if mat_in = "000" then
 					new_state <= state;
@@ -62,6 +64,7 @@ l1: com_timebase port map (clk, res_tb, handshake);
 				res_tb <= '0';
 				ss <= mat_in;
 				shift <= '0';
+				shift2 <= '0';
 				a_out_new <= a_out;
 				if con_d /= confirm then
 					new_state <= loading;
@@ -70,8 +73,9 @@ l1: com_timebase port map (clk, res_tb, handshake);
 				end if;
 			when loading =>
 				shift <= '1';
+				shift2 <= '0';
 				a_out_new <= ard_in;
-				ss <= "00000";
+				ss <= "000";
 				res_tb <= '0';
 				if ard_in = "00000" then
 					new_state <= shifting1;
@@ -80,23 +84,23 @@ l1: com_timebase port map (clk, res_tb, handshake);
 				end if;
 			when shifting1 =>
 				res_tb <= '1';
-				ss <= "00000";
+				shift <= '0';
+				shift2 <= '0';
+				ss <= "000";
 				a_out_new <= a_out;
 				if succes = '1' then
-					shift <= '1';
 					new_state <= shifting2;
 				elsif end_bit = '1' then
 					new_state <= sel_state;
-					shift <= '0';
 				else
 					new_state <= state;
-					shift <= '0';
 				end if;
 			when shifting2 =>
 				res_tb <= '1';
 				new_state <= shifting1;
-				ss <= "00000";
-				shift <= '0';
+				ss <= "000";
+				shift <= '1';
+				shift2 <= '1';
 				a_out_new <= a_out;
 		end case;
 	end process;
@@ -104,4 +108,3 @@ l1: com_timebase port map (clk, res_tb, handshake);
 arr_out <= a_out_new;
 song_sel <= ss;
 end behaviour;
-
