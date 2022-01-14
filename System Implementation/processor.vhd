@@ -5,6 +5,7 @@ entity processor is
    port(clk           : in  std_logic;
         res           : in  std_logic;
 		mode			  :	in	std_logic;
+		input_d			  : in	 std_logic;
         notes_OUT     : in  std_logic_vector(4 downto 0);
         notesA_OUT    : in  std_logic_vector(4 downto 0);
         succesbit_pwm : out std_logic;
