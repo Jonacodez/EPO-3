@@ -21,7 +21,7 @@ architecture behv of shift_reg_2 is
     	of std_logic_vector(sr_width - 1 downto 0);
 	signal sr, sr_new: sr_type;
 	signal state, new_state: states;
-	signal count, new_count: unsigned (2 downto 0);
+	signal count, new_count: std_logic_vector (2 downto 0);
 	signal input: std_logic_vector (4 downto 0);
 
 begin
@@ -58,7 +58,7 @@ begin
 				sr_new(5) <= input5;
 				sr_new(6) <= input6;
 				if succes_count = '1' then
-					new_count <= count +1;
+					new_count <= std_logic_vector(unsigned(count)+1);
 					new_state <= loading1;
 				else 
 					new_count <= count;
@@ -68,12 +68,12 @@ begin
 				if succes = '1' then 
 					sr_new <= input & sr(sr'high  downto sr'low +1);
 					new_state <= loading2;
-					new_count <= count -1;
+					new_count <= std_logic_vector(unsigned(count)-1);
 				else
 					new_state <= state;
 					sr_new <= sr;
 					if succes_count = '1' then
-						new_count <= count + 1;
+						new_count <= std_logic_vector(unsigned(count)+1);
 					else 
 						new_count <= count;
 					end if;
@@ -87,9 +87,9 @@ begin
 					new_state <= state;
 					if succes = '1' then
 						sr_new <= input & sr(sr'high downto sr'low +1);
-						new_count <= count -1;
+						new_count <= std_logic_vector(unsigned(count)-1);
 					elsif succes_count = '1' then 
-						new_count <= count +1;
+						new_count <= std_logic_vector(unsigned(count)+1);
 						sr_new <= sr;
 					else 
 						sr_new <= sr;
