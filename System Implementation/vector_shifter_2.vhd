@@ -81,7 +81,7 @@ begin
 			when loading2 => --shift in the value that wasn't on list yet
 				if sr(sr'high) = "00000" then 
 					sr_new <= sr;
-					new_state <= loading1;
+					new_state <= loading0;
 					new_count <= (others => '0');
 				else
 					new_state <= state;
