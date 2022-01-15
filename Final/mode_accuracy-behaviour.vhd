@@ -54,6 +54,7 @@ case state is
 			a <= "00";
 			if count = "00010011000100101101000000" then
 				next_state <= start;
+				succes <= '1';
 			else
 				next_state <= short;
 			end if;
@@ -63,6 +64,7 @@ case state is
 			a <= "00";
 			if count = "00110101011001111110000000" then
 				next_state <= start;
+				succes <= '1';
 			else
 				next_state <= medium;
 			end if;
@@ -72,6 +74,7 @@ case state is
 			a <= "00";
 			if count = "01100011001011101010000000" then
 				next_state <= start;
+				succes <= '1';
 			else
 				next_state <= long;
 			end if;	

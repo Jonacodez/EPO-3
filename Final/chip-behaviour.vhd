@@ -118,6 +118,6 @@ toplevel_RAM1: toplevel_RAM port map(input_arduino, input_confirm, song_select, 
 
 gpu1: toplevel_GPU port map(clk, reset, shift, mode, output0, output1, output2, output3, output4, output5, output6, output7, rout, gout, bout, Hsync, Vsync);
 
-mode2 : mode_accuracy port map (clk,reset,reg2_signal,succes);
+mode2 : mode_accuracy port map (clk,reset,output0,succes);
 
 end behaviour;
