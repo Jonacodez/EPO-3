@@ -6,11 +6,11 @@ architecture behavioural of processor is
 
 type statetype is (reset, compare, true);
 signal state, next_state : statetype;
-signal next_score : std_logic_vector(1 downto 0);
+signal next_score, score1 : std_logic_vector(5 downto 0);
 signal count, new_count	: std_logic_vector(25 downto 0);
 type statetype2 is (reset, compare, true,false,count1,short,medium,long);
 signal state2, next_state2 : statetype2;
-signal A	: std_logic_vector(1 downto 0);
+signal a	: std_logic_vector(1 downto 0);
 begin 
 process(clk, res) 
 begin
@@ -20,21 +20,24 @@ begin
 			state2 <= reset;
 		else
 			state <= next_state;
-			score <= next_score;
+			score1 <= next_score;
 			count <= new_count;
 			state2 <= next_state2;
 		end if;
 	end if;
 end process; 
 
-process(state, state2, count, notes_OUT,notesA_OUT)
+process(state, res, state2, count, notes_OUT,notesA_OUT, regA_out, score1, a, mode, input_d)
 begin
 	if mode ='0' then
 	case state is
 		when reset =>
+			a <= "00";
+			next_state2 <= state2;
 			succesbit_pwm <= '0';
 			succesbit_bit <= '0'; 
-			next_score <= "00";
+			next_score <= "000000";
+			new_count <= (others =>'0');
 			if res='1' then
 				next_state <= state;
 			elsif input_d = '1' then 
@@ -43,9 +46,12 @@ begin
 				next_state <= state;
 			end if;
 		when compare => 
-			next_score <= score;
+			a <= "00";
+			next_state2 <= state2;
+			next_score <= score1;
 			succesbit_pwm <= '0';
 			succesbit_bit <= '0'; 
+			new_count <= count;
 			if input_d = '1' then
 				if(notes_OUT = notesA_OUT) then
 					next_state <= true;
@@ -56,26 +62,34 @@ begin
 				next_state <= state;
 			end if;
 		when true =>
-			next_score <= std_logic_vector(unsigned(score) + 1);
+			a <= "00";
+			next_state2 <= state2;
+			new_count <= count;
+			next_score <= std_logic_vector(unsigned(score1) + 1);
 			succesbit_pwm <= '1';
 			succesbit_bit <= '1'; 
-			next_state <= compare;
-		
+			next_state <= compare;	
 		end case;
 	else
 		case state2 is
 			when reset =>
+			a <= "00";
+			next_state <= state;
 			succesbit_pwm <= '0';
 			succesbit_bit <= '0'; 
-			next_score <= "00";
+			next_score <= "000000";
 			new_count <= (others => '0');
 			if res='1' then
-				next_state2 <= reset;
+				next_state2 <= state2;
 			else 
 				next_state2 <= count1;
 			end if;
 		when count1 => 
-			next_score <= score;
+			a <= "00";
+			next_state <= state;
+			next_score <= score1;
+			succesbit_bit <= '0';
+			succesbit_pwm <= '0';
 			new_count <= std_logic_vector(unsigned(count) + 1);
 			if count = "10000101100000111011000000" then
 				next_state2 <= compare;
@@ -83,47 +97,65 @@ begin
 				next_state2 <= count1;
 			end if;
 		when compare =>
+			next_state <= state;
 			new_count<= (others => '0');
-			next_score <= score;
+			next_score <= score1;
 			succesbit_pwm <= '0';
 			succesbit_bit <= '0'; 
-			if(notes_OUT = notesA_OUT) then
+			if(notes_OUT = regA_out) then
 				next_state2 <= true;
-				A <= notesA_OUT(1 downto 0);
-			elsif (notes_OUT /= notesA_OUT) then
-				A <= notesA_OUT(1 downto 0);
+				a <= regA_OUT(1 downto 0);
+			elsif (notes_OUT /= regA_OUT) then
+				a <= notesA_OUT(1 downto 0);
 				next_state2 <= false;
 			else
 				next_state2 <= compare;
+				a <= "00";
 			end if;
 		when true =>
-			next_score <= std_logic_vector(unsigned(score) + 1);
+			next_state <= state;
+			new_count <= count;
+			next_score <= std_logic_vector(unsigned(score1) + 1);
 			succesbit_pwm <= '1';
 			succesbit_bit <= '1'; 
-			if A = "01" then
+			if a = "01" then
 				next_state2 <= short;
-			elsif A = "10" then
+				a <= "00";
+			elsif a = "10" then
 				next_state2 <= medium;
-			elsif A = "11" then
+				a <= "00";
+			elsif a = "11" then
 				next_state2 <= long;
+				a <= "00";
 			else
 				next_state2 <= compare;
+				a <= "00";
 			end if;
 		when false =>
-			next_score <= score;
+			next_state <= state;
+			new_count <= count;
+			next_score <= score1;
 			succesbit_pwm <= '1';
 			succesbit_bit <= '1'; 
-			if A = "01" then
+			if a = "01" then
 				next_state2 <= short;
-			elsif A = "10" then
+				a <= "00";
+			elsif a = "10" then
 				next_state2 <= medium;
-			elsif A = "11" then
+				a <= "00";
+			elsif a = "11" then
 				next_state2 <= long;
+				a <= "00";
 			else
 				next_state2 <= compare;
+				a <= "00";
 			end if;
 		when short => 
-			next_score <= score;
+			a <= "00";
+			next_state <= state;
+			succesbit_pwm <= '0';
+			succesbit_bit <= '0'; 
+			next_score <= score1;
 			new_count <= std_logic_vector(unsigned(count) + 1);	
 			if count = "00010011000100101101000000" then
 				next_state2 <= compare;
@@ -131,7 +163,11 @@ begin
 				next_state2 <= short;
 			end if;
 		when medium =>
-			next_score <= score;
+			a <= "00";
+			next_state <= state;
+			next_score <= score1;
+			succesbit_pwm <= '0';
+			succesbit_bit <= '0'; 
 			new_count <= std_logic_vector(unsigned(count) + 1);	
 			if count = "00110101011001111110000000" then
 				next_state2 <= compare;
@@ -139,7 +175,11 @@ begin
 				next_state2 <= medium;
 			end if;
 		when long =>
-			next_score <= score;
+			a <= "00";
+			next_state <= state;
+			next_score <= score1;
+			succesbit_pwm <= '0';
+			succesbit_bit <= '0'; 
 			new_count <= std_logic_vector(unsigned(count) + 1);	
 			if count = "01100011001011101010000000" then
 				next_state2 <= compare;
@@ -148,6 +188,7 @@ begin
 			end if;	
 		end case;
 	end if;
+score <= score1;
 end process;
 end architecture behavioural; 
 
