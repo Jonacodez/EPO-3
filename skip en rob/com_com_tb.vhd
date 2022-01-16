@@ -56,8 +56,7 @@ begin
 	mat_in <= "010" after 0 ns,
 		"110" after 3280 ns;
 
-	ard_in <= "00001" after 253 ns,
-		"00010" after 656 ns,
+	ard_in <= "11110" after 253 ns,
 		"00011" after 1054 ns,
 		"00100" after 1453 ns,
 		"00101" after 1858 ns,
