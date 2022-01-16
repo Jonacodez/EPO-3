@@ -36,7 +36,10 @@ begin
        		    		sr_new <= (others => "00000");
 				new_count <= (others => '0');
 				if reset = '0' then
-					new_state <= loading0;
+					if succes_count = '1' then
+						new_state <= loading0;
+					else new_state <= res_state;
+					end if;
 				else new_state <= res_state;
 				end if;
 			when loading0 => --store the data from the main array while the first note hasn't reached green line.
