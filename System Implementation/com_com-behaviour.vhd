@@ -1,6 +1,5 @@
 library IEEE;
 use IEEE.std_logic_1164.ALL;
-
 architecture behaviour of com_com is
 
 component com_timebase is
@@ -9,7 +8,7 @@ port	(clk	: in std_logic;
 	clk2	: out std_logic);
 end component;
 
-type states is (loading, shifting1, shifting2, sel_state, load_state_wate, res_state);
+type states is (loading, shifting1, shifting2, sel_state, load_state_wate, res_state, filter_state);
 signal state: states; 
 signal new_state: states;
 signal a_out, a_out_new: std_logic_vector(4 downto 0);
@@ -75,13 +74,25 @@ l1: com_timebase port map (clk, res_tb, handshake);
 				shift <= '1';
 				shift2 <= '0';
 				a_out_new <= ard_in;
-				ss <= "000";
+				ss <= mat_in;
 				res_tb <= '0';
 				if ard_in = "00000" then
-					new_state <= shifting1;
+					new_state <= filter_state;
 				else 
 					new_state <= load_state_wate;
 				end if;
+			when filter_state =>
+				shift <= '0';
+				ss <= "000";
+				a_out_new <= a_out;
+				res_tb <= '1';
+				if end_bit = '1' then
+					new_state <= shifting1;
+					shift2 <= '1';
+				else 
+					new_state <= state;
+					shift2 <= '0';
+				end if;				
 			when shifting1 =>
 				res_tb <= '1';
 				shift <= '0';
