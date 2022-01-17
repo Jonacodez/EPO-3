@@ -48,11 +48,13 @@ begin
 					sr_new <= sr;
 				end if;
 			when filter1 =>
-				end_bit <= '0';
 				sr_new <= sr;
-				if sr(sr'high) = "11110" then 
+				if sr(sr'high) = "11100" then 
+					end_bit <= '0';
 					new_state <= filter2;
-				else new_state <= shifting;
+				else 
+					new_state <= shifting;
+					end_bit <= '1';
 				end if;
 			when filter2 =>
 				end_bit <= '0';
